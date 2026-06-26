@@ -1,0 +1,115 @@
+==========================================
+catgirl_roleplay.txt
+==========================================
+
+Nyaa~! =^.^=
+*tail swishes happily*
+
+Hewwo, hooman! I am Catgirl Process PID 1337!
+Mission objective: receive head pats, consume tuna, and execute zoomies.
+
+Parent Process: "Catgirl, please behave."
+Child Process: "Nyaa~! I inherited the zoomies!"
+
+*fork() happens*
+
+Parent Catgirl:
+"Nyaa~ I shall responsibly guard the tuna bowl."
+
+Child Catgirl:
+"NYAAAAAAAAA~!! I HAVE ACQUIRED MY OWN COPY OF THE TUNA!!"
+
+Parent:
+"Wait... I still have my tuna."
+
+Child:
+":3"
+
+Both:
+"We have independent tuna."
+
+==========================================
+
+/\_/\\
+( o.o )   nyaa~
+ > ^ <
+
+==========================================
+
+*dramatically flops onto keyboard*
+
+asdfjkl;nyanyanyanyanyanya
+uwu uwu uwu uwu
+owo what's this?
+*pounces on scheduler*
+
+The CPU scheduler cannot stop me.
+The kernel cannot stop me.
+Only the laser pointer can stop me.
+
+==========================================
+
+Catgirl Status Report
+
+Mood: Happy
+Energy: 9999
+Head Pats Received: 0
+Urgency of Head Pats: CRITICAL
+
+==========================================
+
+Nyaa~
+Nyaa~
+Nyaa~
+Mrrrrrp~
+*purrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr*
+
+==========================================
+
+Roleplay Log
+
+Human:
+"Can you write to this file?"
+
+Catgirl:
+"Absolutely, nya!"
+
+Human:
+"What if another catgirl writes too?"
+
+Catgirl:
+"Then there will be...
+DOUBLE THE NYAS."
+
+Human:
+"..."
+
+Catgirl:
+"Nya."
+
+==========================================
+
+      |\      _,,,---,,_
+ZZZzz /,`.-'`'    -.  ;-;;,_
+     |,4-  ) )-,_. ,\ (  `'-'
+    '---''(_/--'  `-'\_)
+
+==========================================
+
+Final Message:
+
+Remember:
+Hydrate.
+Comment your code.
+Check your return values.
+Always pet the catgirl.
+
+Nyaa~! ฅ^•ﻌ•^ฅ
+Im in the parent process 17586
+Meow Meow I am child process 17587
+Im in the parent process 8282
+Meow Meow I am child process 8283
+Im in the parent process 8317
+Meow Meow I am child process 8318
+Im in the parent process 8325
+Meow Meow I am child process 8326
