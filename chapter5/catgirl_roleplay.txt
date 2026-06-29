@@ -105,11 +105,6 @@ Check your return values.
 Always pet the catgirl.
 
 Nyaa~! ฅ^•ﻌ•^ฅ
-Im in the parent process 17586
-Meow Meow I am child process 17587
-Im in the parent process 8282
-Meow Meow I am child process 8283
-Im in the parent process 8317
-Meow Meow I am child process 8318
-Im in the parent process 8325
-Meow Meow I am child process 8326
+
+Im in the parent process 7309
+Meow Meow I am child process 7310
