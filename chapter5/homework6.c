@@ -1,48 +1,71 @@
-/*
-Write a slight modification of the previous program, this time us-
-ing waitpid() instead of wait(). When would waitpid() be
-useful?
+ 
+ /*
+ Nyah~ Homework 6: wait() vs waitpid()
+ 
+ Assignment: Both wait() and waitpid() exist to synchronize a parent process with
+ its child process(es). Their primary job is to make the parent patiently
+ wait until the kitten (child process) has finished its important work.
 
-wait() and waitpid()
+ Dr. Meowra's Operating Systems Notes:
+ 
+ 
+wait(&status) is equivalent to:  waitpid(-1, &status, 0);
+ 
+The first argument to waitpid() determines WHICH child we are waiting for.
+ 
+    -1  -> Wait for ANY Child to return home.
+    PID -> Wait for ONE SPECIFIC child.
+ 
+Example:
 
-The wait() system call suspends execution of the calling process until one of its children terminates. The call wait(&status) is equivalent to:
+    Parent Cat
+    ├── Kitten A (PID 1001)
+    ├── Kitten B (PID 1002)
+    └── Kitten C (PID 1003)
 
-waitpid(-1, &status, 0);
+Calling:
 
-The waitpid() system call suspends execution of the calling process until a child specified by pid argument has changed state.
+    waitpid(1002, NULL, 0);
 
-you can change the behavior based off the number you pass. -1 means any of the child processes complete then continue.
+means:
+    "Ignore the other fluffballs. Wake me only when Kitten B
+    comes home safely."
 
-but we can replace -1 with a specific pid in order to wait for a specific child 
+  This makes waitpid() useful when the parent owns multiple child
+  processes but only needs to synchronize with one of them.
+ 
+  Return values:
+    Child PID  -> Success! Nya~
+    -1         -> Something went horribly meowrong.
+    0         -> Only possible with WNOHANG when no child has exited.
 
-Suppose you have
+Experiment:
+I intentionally had the child execute:
+    waitpid(getpid(), NULL, 0);
 
-Parent
- ├── Child A (PID 1001)
- ├── Child B (PID 1002)
- └── Child C (PID 1003)
+ This is equivalent to a kitten trying to wait for itself to come
+ home. The kernel looks at the request and says:
 
-Then
+    "Nya... that's not how families work."
+ 
+ Since a process may only wait for ITS OWN CHILDREN (not itself),
+ the kernel rejects the request and waitpid() returns -1.
 
-waitpid(1002, NULL, 0);
+To determine WHY it failed, inspect errno:
+    if (waitpid(getpid(), NULL, 0) == -1)
+        printf("%s\n", strerror(errno));
 
-means
-
-"Ignore A and C. Only wake me when Child B exits." Super Cool
-
-remember wait and waitpid are easiest to think of as jobs. Their jobs are to syncronize the parent with the child.
-
-They have a secondary function of reporting that something happened, but does not provide an explanation of what exactly happened
-
-That is where errno.h can help us out. 
-
-When the kernel attempts to wait for the child process it will see their is no child and return a number
-
-Seeing 10 is not helpful thus we can leverage the errno.h library to help us convert this number to something meaningful
-
-Notice we induce this error on purpouse to show that the child cant call wait on its self if there in no other child processes
-
-*/
+For this experiment the error is:
+       "No child processes"
+ 
+Internally, the kernel returns the error code ECHILD. The C library
+stores that value in errno, and strerror(errno) translates it into
+a human-readable string.
+ 
+  Moral of the story:
+    A responsible parent catgirl waits for its kittens.
+    A kitten cannot wait for itself.
+ */
 
 #include <stdio.h>
 #include <unistd.h>
