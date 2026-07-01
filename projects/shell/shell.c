@@ -30,7 +30,7 @@ int main()
 
         int rc = fork();
 
-        if(rc< 0)
+        if(rc < 0)
         {
             printf("fork failed\n");
         }
@@ -47,7 +47,7 @@ int main()
     }
     while( (strcmp(userinput, "exit") && strcmp(userinput, "Exit")) );
 
-
+    return 0;
 }
 
 void Print_Buffer(char *buffer, size_t max)
@@ -87,9 +87,8 @@ void Print_Array(char *array)
     printf("********PRINT ARRAY********\n");
     size_t length = 0;
 
-    // Find the length manually (or use strlen)
-    while (array[length] != '\0')
-        length++;
+    // Find the length
+    length = strnlen(array,MAX);
 
     // Top border
     for (size_t i = 0; i <= length; i++)
