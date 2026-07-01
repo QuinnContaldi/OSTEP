@@ -1,6 +1,10 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <errno.h>
 
 void Print_Array(char* array);
 void Print_Buffer(char* array, size_t max);
@@ -10,8 +14,9 @@ int main()
 {
     char userinput[MAX];
     char username[MAX];
-    printf("Welcome to Dr.Meowras shell! enter in your username! \n");
+    printf("Welcome to Dr.Meowras shell! enter in your username!: ");
     fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = '\0';
 
     do
     {
@@ -19,10 +24,25 @@ int main()
         if(fgets(userinput, sizeof(userinput), stdin) == NULL)
             return 1;
 
-        Print_Buffer(userinput, MAX);
-        printf("removing \\0\n");
         userinput[strcspn(userinput,"\n")] = '\0';
         Print_Array(userinput);
+        Print_Buffer(userinput, MAX);
+
+        int rc = fork();
+
+        if(rc< 0)
+        {
+            printf("fork failed\n");
+        }
+        else if(rc == 0 ) 
+        {
+            printf("parent pid: %d of child pid: %d\n",getpid(), rc);
+        }
+        else
+        {
+            printf("currently in child pid %d\n", getpid());
+        }
+
         
     }
     while( (strcmp(userinput, "exit") && strcmp(userinput, "Exit")) );
@@ -30,32 +50,76 @@ int main()
 
 }
 
-void Print_Buffer(char* buffer, size_t max)
+void Print_Buffer(char *buffer, size_t max)
 {
-    int index = 0;
+    printf("********PRINT BUFFER********\n");
+    // Top border
+    for (size_t i = 0; i < max; i++)
+        printf("+----");
+    printf("+\n");
 
-    printf("******Array Contains******\n");
-
-    for (char* p = buffer; p < buffer + max; p++, index++)
+    // Contents
+    for (size_t i = 0; i < max; i++)
     {
-        if (*p == '\n')
-            printf("array[%d] = '\\n'\n", index);
+        printf("|");
+
+        if (buffer[i] == '\0')
+            printf(" \\0 ");
+        else if (buffer[i] == '\n')
+            printf(" \\n ");
+        else if (buffer[i] == '\t')
+            printf(" \\t ");
+        else if (buffer[i] >= 32 && buffer[i] <= 126)
+            printf(" %c  ", buffer[i]);
         else
-            printf("array[%d] = %c \n", index, *p);
+            printf(" ?? ");
     }
-    printf("array[%d] = \\0\n\n\n\n", index);
-};
+    printf("|\n");
 
-void Print_Array(char* array)
+    // Bottom border
+    for (size_t i = 0; i < max; i++)
+        printf("+----");
+    printf("+\n");
+}
+
+void Print_Array(char *array)
 {
-    size_t size = strlen(array);
-    int index = 0;
+    printf("********PRINT ARRAY********\n");
+    size_t length = 0;
 
-    for(char* p = array;
-        p < array + size && *p != '\0';
-        p++, index++)
+    // Find the length manually (or use strlen)
+    while (array[length] != '\0')
+        length++;
+
+    // Top border
+    for (size_t i = 0; i <= length; i++)
+        printf("+----");
+    printf("+\n");
+
+    // Contents
+    for (size_t i = 0; i < length; i++)
     {
-        printf("array[%d] = %c, ", index, *p);
+        printf("|");
+
+        if (array[i] == '\n')
+            printf(" \\n ");
+        else if (array[i] == '\t')
+            printf(" \\t ");
+        else
+            printf(" %c  ", array[i]);
     }
-    printf("\n\n\n\n\n");
-};
+
+    // Print the null terminator
+    printf("| \\0 |\n");
+
+    // Bottom border
+    for (size_t i = 0; i <= length; i++)
+        printf("+----");
+    printf("+\n");
+
+    // Index row
+    for (size_t i = 0; i <= length; i++)
+        printf(" %2zu  ", i);
+
+    printf("\n\n");
+}
