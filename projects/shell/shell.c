@@ -32,15 +32,17 @@ int main()
 
         if(rc < 0)
         {
-            printf("fork failed\n");
+            printf("Meaning wait failed producing error %s\n", strerror(errno)); 
         }
         else if(rc == 0 ) 
         {
-            printf("parent pid: %d of child pid: %d\n",getpid(), rc);
+            printf("In child PID: %d\n" ,getpid());
+            execl("meow", "meow", (char *)NULL);
         }
         else
         {
-            printf("currently in child pid %d\n", getpid());
+            printf("Currently in Parent PID: %d, Child PID: %d\n", getpid(), rc);
+            wait(NULL);
         }
 
         
