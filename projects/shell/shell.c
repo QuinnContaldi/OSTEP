@@ -7,13 +7,16 @@
 #include <errno.h>
 
 void Print_Array(char* array);
-void Print_Buffer(char* array, size_t max);
+void Print_Buffer(char* array);
+void Clean_Array(char* array);
+void Clean_Command(char* array,char* commands);
 
-#define MAX 20
+#define MAX 40
 int main()
 {
     char userinput[MAX];
     char username[MAX];
+    char commandarray[MAX];
     printf("Welcome to Dr.Meowras shell! enter in your username!: ");
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = '\0';
@@ -21,12 +24,13 @@ int main()
     do
     {
         printf("%s@MEOW----> ",username );
+        Clean_Array(userinput);
         if(fgets(userinput, sizeof(userinput), stdin) == NULL)
             return 1;
-
         userinput[strcspn(userinput,"\n")] = '\0';
         Print_Array(userinput);
-        Print_Buffer(userinput, MAX);
+        Print_Buffer(userinput);
+        Clean_Command(userinput,commandarray);
 
         int rc = fork();
 
@@ -50,38 +54,6 @@ int main()
     while( (strcmp(userinput, "exit") && strcmp(userinput, "Exit")) );
 
     return 0;
-}
-
-void Print_Buffer(char *buffer, size_t max)
-{
-    printf("********PRINT BUFFER********\n");
-    // Top border
-    for (size_t i = 0; i < max; i++)
-        printf("+----");
-    printf("+\n");
-
-    // Contents
-    for (size_t i = 0; i < max; i++)
-    {
-        printf("|");
-
-        if (buffer[i] == '\0')
-            printf(" \\0 ");
-        else if (buffer[i] == '\n')
-            printf(" \\n ");
-        else if (buffer[i] == '\t')
-            printf(" \\t ");
-        else if (buffer[i] >= 32 && buffer[i] <= 126)
-            printf(" %c  ", buffer[i]);
-        else
-            printf(" ?? ");
-    }
-    printf("|\n");
-
-    // Bottom border
-    for (size_t i = 0; i < max; i++)
-        printf("+----");
-    printf("+\n");
 }
 
 void Print_Array(char *array)
@@ -123,4 +95,64 @@ void Print_Array(char *array)
         printf(" %2zu  ", i);
 
     printf("\n\n");
+}
+
+void Print_Buffer(char *buffer)
+{
+    printf("********PRINT BUFFER********\n");
+    // Top border
+
+    for (size_t i = 0; i < MAX; i++)
+        printf("+----");
+    printf("+\n");
+
+    // Contents
+    for (size_t i = 0; i < MAX; i++)
+    {
+        printf("|");
+
+        if (buffer[i] == '\0')
+            printf(" \\0 ");
+        else if (buffer[i] == '\n')
+            printf(" \\n ");
+        else if (buffer[i] == '\t')
+            printf(" \\t ");
+        else
+            printf(" %c  ", buffer[i]);
+    }
+    printf("|\n");
+
+    // Bottom border
+    for (size_t i = 0; i < MAX; i++)
+        printf("+----");
+    printf("+\n");
+}
+
+
+void Clean_Array(char *buffer)
+{
+    size_t length;
+
+    // Find the length
+    length = strnlen(buffer,MAX);
+    for (size_t i = 0; i < length; i++)
+        buffer[i] = ' ';
+}
+
+void Clean_Command(char* array, char* commands)
+{
+    size_t length;
+
+    // Find the length
+    length = strnlen(array,MAX);
+
+    for(size_t i = 0; i < length; i++)
+    {
+        if (array[i] == '\0' || array[i] == '\n'|| array[i] == '\t' || array[i] == ' ')
+            array[i] = '\0';
+        else
+            commands[i] = array[i];
+        Print_Buffer(array);
+        Print_Buffer(commands);
+    }
 }
